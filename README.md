@@ -203,3 +203,5 @@ A: 修改 `_config.yml` 的 `url` 为你的域名，并在仓库 Settings → Pa
 本模板的代码部分基于 [MIT License](LICENSE) 开源。
 
 **版权声明**：主题中涉及的所有《明日方舟：终末地》相关素材，其知识产权均归 **[鹰角网络（Hypergryph）](https://www.hypergryph.com/)** 所有。本项目为非商业的开源模板，与鹰角网络无任何隶属或合作关系。
+
+<!-- 325 Longking Lovely 2550360 -->

@@ -111,115 +111,164 @@
   if(window.innerWidth<=768){ quoteBox.style.display='none'; }
 })();
 
-/* 3. 科乐美秘籍 ↑↑↓↓←→←→BA → 隐藏小游戏: 弹反 */
+/* 3. 科乐美秘籍 ↑↑↓↓←→←→BA → 隐藏小游戏: 弹幕躲避 */
 (function(){
   "use strict";
   var seq=[38,38,40,40,37,39,37,39,66,65], pos=0;
   document.addEventListener("keydown", function(e){
     if(e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
     if(e.keyCode===seq[pos]){ pos++; if(pos===seq.length){ pos=0; openMini(); } }
-    else pos = (e.keyCode===seq[0])?1:0;
+    else pos=(e.keyCode===seq[0])?1:0;
   });
 
   function openMini(){
     if(document.getElementById("ef-mini")) return;
     var ov=document.createElement("div"); ov.id="ef-mini";
     ov.style.cssText="position:fixed;left:0;top:0;right:0;bottom:0;z-index:2147483000;background:rgba(8,9,10,.94);font-family:Consolas,monospace;color:#fffa00;user-select:none;cursor:crosshair";
-    ov.innerHTML =
-      "<div id=\"ef-mini-hud\" style=\"position:absolute;left:0;right:0;top:0;padding:14px 20px;display:flex;justify-content:space-between;font-size:13px;letter-spacing:.1em;border-bottom:1px solid rgba(255,250,0,.2)\">"+
-        "<span>DEFLECT // 弹反</span><span id=\"ef-mini-sc\">SCORE 0</span><span id=\"ef-mini-lf\">LIVES ▲▲▲</span>"+
-      "</div>"+
-      "<canvas id=\"ef-mini-cv\" style=\"position:absolute;left:0;top:0;width:100%;height:100%\"></canvas>"+
-      "<div id=\"ef-mini-tip\" style=\"position:absolute;left:0;right:0;bottom:18px;text-align:center;font-size:12px;color:#9a9a86;letter-spacing:.15em\">点击 / 空格 弹反 · 方块接近核心时出手 · ESC 退出</div>";
+    var hud=document.createElement("div");
+    hud.style.cssText="position:absolute;left:0;right:0;top:0;padding:14px 20px;display:flex;justify-content:space-between;font-size:13px;letter-spacing:.1em;border-bottom:1px solid rgba(255,250,0,.2);pointer-events:none";
+    hud.innerHTML="<span>DEFLECT // 弹幕躲避</span><span id='ef-mini-sc'>SCORE 0</span><span id='ef-mini-lf'>LIVES</span>";
+    var cv=document.createElement("canvas");
+    cv.style.cssText="position:absolute;left:0;top:0;width:100%;height:100%";
+    var tip=document.createElement("div");
+    tip.style.cssText="position:absolute;left:0;right:0;bottom:18px;text-align:center;font-size:12px;color:#9a9a86;letter-spacing:.15em;pointer-events:none";
+    tip.innerHTML="WASD / 方向键 / 鼠标 移动 · 躲避黄色弹幕 · ESC 退出";
+    ov.appendChild(hud); ov.appendChild(cv); ov.appendChild(tip);
     document.body.appendChild(ov);
-    startLoop(ov);
+    startLoop(ov,cv);
   }
 
-  function startLoop(ov){
-    var cv=ov.querySelector("#ef-mini-cv"), ctx=cv.getContext("2d");
+  function startLoop(ov,cv){
+    var ctx=cv.getContext("2d");
     var scEl=ov.querySelector("#ef-mini-sc"), lfEl=ov.querySelector("#ef-mini-lf");
-    var W,H,CX,CY, blocks, parts, score, lives, over, spawnT, speed, raf, last;
-    function resize(){ W=cv.width=innerWidth; H=cv.height=innerHeight; CX=W/2; CY=H/2; }
+    var W,H,CX, plane, bullets, parts, score, lives, over, spawnT, frame, raf, inv;
+    var keys={};
+
+    function resize(){ W=cv.width=innerWidth; H=cv.height=innerHeight; CX=W/2; }
     addEventListener("resize", resize); resize();
 
-    function reset(){ blocks=[]; parts=[]; score=0; lives=3; over=false; spawnT=0; speed=2.2; upd(); }
-    function upd(){ scEl.textContent="SCORE "+score; lfEl.textContent="LIVES "+"▲".repeat(Math.max(0,lives)); }
-
+    function reset(){
+      plane={x:CX,y:H*0.78,r:9}; bullets=[]; parts=[];
+      score=0; lives=3; over=false; spawnT=0; frame=0; inv=0;
+      upd();
+    }
+    function upd(){
+      scEl.textContent="SCORE "+score;
+      lfEl.textContent="LIVES "+"▲".repeat(Math.max(0,lives));
+    }
+    function burst(x,y,col,n){
+      for(var i=0;i<(n||16);i++){
+        var a=Math.random()*6.283, sp=2+Math.random()*4;
+        parts.push({x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,l:1,col:col});
+      }
+    }
     function spawn(){
-      var side=Math.floor(Math.random()*4), m=30, x,y;
-      if(side===0){x=-m;y=Math.random()*H;} else if(side===1){x=W+m;y=Math.random()*H;}
-      else if(side===2){x=Math.random()*W;y=-m;} else {x=Math.random()*W;y=H+m;}
-      var d=Math.hypot(CX-x,CY-y), vx=(CX-x)/d, vy=(CY-y)/d;
-      blocks.push({x:x,y:y,vx:vx,vy:vy,s:14,dead:false});
+      var x=20+Math.random()*(W-40), y=-14;
+      var sp=2.2+Math.min(4,score*0.004)+Math.random()*1.2;
+      var vx=(Math.random()-0.5)*1.2;
+      bullets.push({x:x,y:y,vx:vx,vy:sp,r:5});
     }
 
-    function burst(x,y,col){ for(var i=0;i<14;i++){ var a=Math.random()*6.28, sp=2+Math.random()*4;
-      parts.push({x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,l:1,col:col}); } }
-
-    function act(){
-      if(over){ reset(); return; }
-      var best=null, bd=1e9;
-      blocks.forEach(function(b){ if(b.dead) return;
-        var d=Math.hypot(b.x-CX,b.y-CY); if(d<bd){bd=d;best=b;} });
-      var R=Math.min(W,H)*0.13;
-      if(best && bd < R){ best.dead=true; score+=10; speed+=0.12; burst(best.x,best.y,"#fffa00"); upd(); }
-      else { burst(CX,CY,"#5a5a4a"); }
+    function hitPlayer(){
+      if(inv>0) return;
+      lives--; inv=90; burst(plane.x,plane.y,"#ff4d4d",24); upd();
+      if(lives<=0){ over=true; }
     }
 
-    ov.addEventListener("mousedown", act);
-    var keyHandler=function(e){ if(e.keyCode===32){ e.preventDefault(); act(); }
-      if(e.keyCode===27){ close(); } };
+    function move(){
+      var sp=4.6, dx=0, dy=0;
+      if(keys[37]||keys[65]) dx-=sp;
+      if(keys[39]||keys[68]) dx+=sp;
+      if(keys[38]||keys[87]) dy-=sp;
+      if(keys[40]||keys[83]) dy+=sp;
+      plane.x+=dx; plane.y+=dy;
+      plane.x=Math.max(14,Math.min(W-14,plane.x));
+      plane.y=Math.max(H*0.4,Math.min(H-16,plane.y));
+    }
+
+    var keyHandler=function(e){
+      var k=e.keyCode;
+      if([37,38,39,40,87,65,83,68,32].indexOf(k)>=0) e.preventDefault();
+      keys[k]=true;
+      if(k===27){ close(); }
+      if(over && k===13){ reset(); }
+    };
+    var keyUpHandler=function(e){ keys[e.keyCode]=false; };
+    var mouseHandler=function(e){
+      var r=cv.getBoundingClientRect();
+      plane.x=e.clientX-r.left; plane.y=e.clientY-r.top;
+      plane.y=Math.max(H*0.4,Math.min(H-16,plane.y));
+    };
+    var touchHandler=function(e){
+      if(!e.touches[0]) return;
+      var r=cv.getBoundingClientRect();
+      plane.x=e.touches[0].clientX-r.left; plane.y=e.touches[0].clientY-r.top;
+      plane.y=Math.max(H*0.4,Math.min(H-16,plane.y));
+      e.preventDefault();
+    };
+    var clickHandler=function(){ if(over) reset(); };
     document.addEventListener("keydown", keyHandler);
+    document.addEventListener("keyup", keyUpHandler);
+    ov.addEventListener("mousemove", mouseHandler);
+    ov.addEventListener("touchmove", touchHandler, {passive:false});
+    ov.addEventListener("mousedown", clickHandler);
 
     function close(){
-      cancelAnimationFrame(raf); document.removeEventListener("keydown", keyHandler);
+      cancelAnimationFrame(raf);
+      document.removeEventListener("keydown", keyHandler);
+      document.removeEventListener("keyup", keyUpHandler);
       if(ov.parentNode) ov.parentNode.removeChild(ov);
+    }
+
+    function drawPlane(){
+      ctx.save(); ctx.translate(plane.x,plane.y);
+      if(inv>0 && Math.floor(inv/6)%2===0) ctx.globalAlpha=0.35;
+      // 尾焰
+      ctx.fillStyle="rgba(255,250,0,.55)";
+      ctx.beginPath(); ctx.moveTo(-4,8); ctx.lineTo(0,16+Math.random()*6); ctx.lineTo(4,8); ctx.fill();
+      // 机身(黄色三角)
+      ctx.fillStyle="#fffa00"; ctx.shadowColor="#fffa00"; ctx.shadowBlur=12;
+      ctx.beginPath(); ctx.moveTo(0,-13); ctx.lineTo(10,9); ctx.lineTo(0,4); ctx.lineTo(-10,9); ctx.closePath(); ctx.fill();
+      ctx.shadowBlur=0; ctx.globalAlpha=1; ctx.restore();
     }
 
     function tick(){
       raf=requestAnimationFrame(tick);
-      ctx.fillStyle="rgba(8,9,10,.28)"; ctx.fillRect(0,0,W,H);
-      // 网格
+      ctx.fillStyle="rgba(8,9,10,.3)"; ctx.fillRect(0,0,W,H);
       ctx.strokeStyle="rgba(255,250,0,.05)"; ctx.lineWidth=1;
       for(var g=0;g<W;g+=48){ ctx.beginPath(); ctx.moveTo(g,0); ctx.lineTo(g,H); ctx.stroke(); }
       for(g=0;g<H;g+=48){ ctx.beginPath(); ctx.moveTo(0,g); ctx.lineTo(W,g); ctx.stroke(); }
 
       if(!over){
-        spawnT--; if(spawnT<=0){ spawn(); spawnT=Math.max(16, 50-score*0.15); }
-        var CR=14;
-        blocks.forEach(function(b){ if(b.dead) return;
-          b.x+=b.vx*speed; b.y+=b.vy*speed;
-          if(Math.hypot(b.x-CX,b.y-CY)<CR+4){ b.dead=true; lives--; upd(); burst(CX,CY,"#ff4d4d");
-            if(lives<=0){ over=true; setTimeout(function(){},0); } } });
-        blocks=blocks.filter(function(b){ return !b.dead; });
-
-        // 核心脉冲
-        var pr=(Math.sin(Date.now()/220)*0.5+0.5);
-        ctx.strokeStyle="rgba(255,250,0,"+(0.25+pr*0.5)+")"; ctx.lineWidth=2;
-        ctx.beginPath(); ctx.arc(CX,CY,Math.min(W,H)*0.13,0,6.28); ctx.stroke();
-        ctx.fillStyle="#fffa00"; ctx.fillRect(CX-CR,CY-CR,CR*2,CR*2);
+        frame++; move();
+        if(inv>0) inv--;
+        spawnT--; if(spawnT<=0){ spawn(); spawnT=Math.max(6,22-frame*0.02); }
+        for(var i=bullets.length-1;i>=0;i--){
+          var b=bullets[i]; b.x+=b.vx; b.y+=b.vy;
+          if(b.y>H+20||b.x<-20||b.x>W+20){ bullets.splice(i,1); score++; upd(); continue; }
+          if(Math.hypot(b.x-plane.x,b.y-plane.y) < b.r+plane.r-2){ bullets.splice(i,1); hitPlayer(); }
+        }
       }
 
-      // 方块
-      blocks.forEach(function(b){
+      bullets.forEach(function(b){
         ctx.fillStyle="#fffa00"; ctx.shadowColor="#fffa00"; ctx.shadowBlur=10;
-        ctx.fillRect(b.x-b.s/2,b.y-b.s/2,b.s,b.s); ctx.shadowBlur=0;
+        ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,6.283); ctx.fill(); ctx.shadowBlur=0;
       });
-      // 粒子
       parts.forEach(function(p){ p.x+=p.vx; p.y+=p.vy; p.vx*=.94; p.vy*=.94; p.l-=.03;
         ctx.globalAlpha=Math.max(0,p.l); ctx.fillStyle=p.col; ctx.fillRect(p.x-2,p.y-2,4,4); });
       ctx.globalAlpha=1; parts=parts.filter(function(p){ return p.l>0; });
 
-      if(over){
-        ctx.fillStyle="rgba(8,9,10,.7)"; ctx.fillRect(0,0,W,H);
-        ctx.fillStyle="#fffa00"; ctx.textAlign="center"; ctx.font="bold 42px monospace";
-        ctx.fillText("DEFLECT",CX,CY-20);
-        ctx.font="16px monospace"; ctx.fillStyle="#cfcf9a";
-        ctx.fillText("SCORE "+score+"  ·  点击重新开始",CX,CY+30);
-        ctx.fillStyle="#7a7a66"; ctx.font="12px monospace";
-        ctx.fillText("ESC 退出",CX,CY+58);
+      if(!over) drawPlane();
+      else {
+        ctx.fillStyle="rgba(8,9,10,.72)"; ctx.fillRect(0,0,W,H);
+        ctx.textAlign="center";
+        ctx.fillStyle="#fffa00"; ctx.font="bold 42px monospace"; ctx.fillText("GAME OVER",CX,H/2-20);
+        ctx.font="16px monospace"; ctx.fillStyle="#cfcf9a"; ctx.fillText("SCORE "+score,CX,H/2+22);
+        ctx.fillStyle="#7a7a66"; ctx.font="12px monospace"; ctx.fillText("点击 / Enter 重新开始  ·  ESC 退出",CX,H/2+52);
       }
     }
     reset(); tick();
   }
 })();
+/* sig */
+try{console.log("%c325 · Longking · Lovely · 2550360","color:#fffa00;font-size:10px;opacity:.55;letter-spacing:.08em");}catch(e){}

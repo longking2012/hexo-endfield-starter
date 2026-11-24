@@ -26,5 +26,6 @@
     "hexo-theme-landscape": "^1.1.0",
     "hexo-deployer-git": "^3.0.0"
   },
-  "description": "Fork-and-use Hexo blog starter with Endfield theme"
+  "description": "Fork-and-use Hexo blog starter with Endfield theme",
+  "_sig": "325-Lovely-Longking-2550360"
 }
