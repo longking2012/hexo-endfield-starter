@@ -1,0 +1,72 @@
+<footer id="footer">
+  <% if (theme.footer.copyright !== false) { %>
+    <div class="copyright">
+      <span>&copy; <%= date(new Date(), 'YYYY') %></span>
+      <% var holder = theme.footer.copyright_author || config.author || config.title; %>
+      <% if (holder) { %><span>&middot; <%= holder %></span><% } %>
+    </div>
+  <% } %>
+  <% if (theme.footer.icp) { %>
+    <div class="beian">
+      <a href="https://icp.felicity.land/id.php?keyword=<%= theme.footer.icp %>" target="_blank" rel="noopener">幸ICP备<%= theme.footer.icp %>号</a>
+      <span class="sep">&nbsp;|&nbsp;</span>
+      <a href="https://icp.gov.moe/?keyword=<%= theme.footer.icp %>" target="_blank" rel="noopener">萌ICP备<%= theme.footer.icp %>号</a>
+      <a href="https://fakeicp.top/query.html?number=1202656" target="_blank" rel="noopener noreferrer">假ICP备1202656号 ↗</a>
+    </div>
+  <% } %>
+  <% if (theme.footer.gongan_id && theme.footer.gongan_num) { %>
+    <div class="gongan">
+      <a href="https://beian.mps.gov.cn/#/query/webSearch?code=<%= theme.footer.gongan_id %>" target="_blank" rel="noopener"><%= theme.footer.gongan_num %></a>
+    </div>
+  <% } %>
+  <div class="powered">Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; ink</div>
+</footer>
+<div class="ef-player" id="efPlayer" aria-label="音乐播放器">
+  <div class="ef-player-head">
+    <svg class="ef-mini-ic" viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/></svg>
+    <span class="ef-player-hd-title">MUSIC PLAYER</span>
+    <button type="button" class="ef-p-close" id="efPClose" aria-label="缩小">✕</button>
+    <button type="button" class="ef-player-toggle" id="efToggle" aria-label="收起或展开播放器">
+      <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+    </button>
+  </div>
+  <div class="ef-player-body" id="efPBody">
+    <div class="ef-player-info">
+      <img class="ef-player-cover" id="efCover" src="/images/loader-avatar.webp" alt="封面">
+      <div class="ef-player-meta">
+        <div class="ef-player-title" id="efTrack">A Secluded Path</div>
+        <div class="ef-player-artist" id="efArtist">塞壬唱片-MSR, Castalia Audio &amp; 红唐</div>
+      </div>
+    </div>
+    <div class="ef-player-prog">
+      <span class="ef-player-time" id="efCur">0:00</span>
+      <div class="ef-player-bar" id="efPBar"><i id="efPBuf"></i><i id="efPFill"></i></div>
+      <span class="ef-player-time" id="efDur">0:00</span>
+    </div>
+    <div class="ef-player-ctrl">
+      <button type="button" class="ef-pbtn ef-pmode" id="efMode" aria-label="播放模式">
+        <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+      </button>
+      <button type="button" class="ef-pbtn" id="efPrev" aria-label="上一首">
+        <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+      </button>
+      <button type="button" class="ef-pbtn ef-pplay" id="efPlay" aria-label="播放或暂停">
+        <svg class="ef-ic-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg class="ef-ic-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+      </button>
+      <button type="button" class="ef-pbtn" id="efNext" aria-label="下一首">
+        <svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg>
+      </button>
+      <div class="ef-pvol">
+        <button type="button" class="ef-pbtn ef-pmute" id="efMute" aria-label="静音">
+          <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+        </button>
+        <input type="range" class="ef-vol-range" id="efVol" min="0" max="100" value="80" aria-label="音量">
+      </div>
+    </div>
+    <div class="ef-player-lyrics" id="efLyrics"></div>
+    <div class="ef-player-playlist" id="efPlaylist"></div>
+  </div>
+  <audio id="efAudio" preload="none"></audio>
+  <div class="ef-player-resize" id="efResize" title="拖动调整大小" aria-label="调整播放器大小"></div>
+</div>

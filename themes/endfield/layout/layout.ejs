@@ -1,0 +1,64 @@
+<%
+  var pageTitle;
+  if (is_home()) {
+    pageTitle = config.title + (config.subtitle ? " · " + config.subtitle : "");
+  } else {
+    var t = page.title;
+    if (!t) {
+      if (page.tag) t = "#" + page.tag;
+      else if (page.category) t = page.category;
+      else if (page.layout === "tags") t = "标签";
+      else if (page.layout === "categories") t = "分类";
+      else if (page.archive) t = "归档";
+      else t = config.title;
+    }
+    pageTitle = t + " · " + config.title;
+  }
+  var ogTitle = is_home() ? config.title : (page.title || (page.tag ? ("#" + page.tag) : (page.category || "归档")));
+%>
+<!DOCTYPE html>
+<html lang="<%= config.language %>">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+  <title><%= pageTitle %></title>
+  <meta name="description" content="<%= (page.description || page.title || config.description).toString() %>">
+  <meta name="keywords" content="<%= config.keywords %>">
+  <meta property="og:type" content="<%= is_post() ? "article" : "website" %>">
+  <meta property="og:title" content="<%= ogTitle %>">
+  <meta property="og:url" content="<%- is_home() ? config.url + "/" : page.permalink %>">
+  <meta property="og:site_name" content="<%= config.title %>">
+  <meta property="og:description" content="<%= (page.description || page.title || config.description).toString() %>">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="<%- is_home() ? config.url + "/" : page.permalink %>">
+  <link rel="alternate" href="<%- url_for("atom.xml") %>" type="application/atom+xml" title="<%= config.title %>">
+  <% if (theme.verification.baidu) { %><meta name="baidu-site-verification" content="<%= theme.verification.baidu %>"><% } %>
+  <% if (theme.verification.bing) { %><meta name="msvalidate.01" content="<%= theme.verification.bing %>"><% } %>
+  <% if (theme.verification.google) { %><meta name="google-site-verification" content="<%= theme.verification.google %>"><% } %>
+  <link rel="stylesheet" href="/css/main.css?v=20261122b">
+  <link rel="stylesheet" href="/css/endfield.css?v=20261124i">
+  <style>:root{--accent:<%= theme.accent_color || "#fffa00" %>;<%= theme.font && theme.font.sans ? "--font-sans:"+theme.font.sans+";" : "" %><%= theme.font && theme.font.mono ? "--font-mono:"+theme.font.mono+";" : "" %>}</style>
+</head>
+<body data-theme="<%= theme.dark_mode.default %>" class="ef-theme">
+<div class="ef-loader" id="efLoader">
+  <div class="ef-loader-inner">
+    <img class="ef-loader-avatar" src="/images/loader-avatar.webp" alt="">
+    <div class="ef-loader-title">若水凡心</div>
+    <div class="ef-loader-bar"><i id="efBar"></i></div>
+    <div class="ef-loader-foot"><span class="ef-loader-lb">LOADING</span><span id="efPct">0%</span></div>
+  </div>
+</div>
+<script src="/js/ef-loader.js?v=20261123p"></script>
+  <%- partial("_partial/header") %>
+  <div id="content">
+    <%- body %>
+  </div>
+  <%- partial("_partial/footer") %>
+
+  <script>window.__EF_MANIFEST = {"taishan":{"key":"taishan","title":"泰山","lon0":117.1014,"lat0":36.2556,"dlon":0.12,"dlat":0.1,"min":131.0,"max":1500.0,"marks":[{"name":"泰山","lon":117.1014,"lat":36.2556},{"name":"南天门","lon":117.1014,"lat":36.2527},{"name":"玉皇顶","lon":117.1014,"lat":36.2557}]},"huashan":{"key":"huashan","title":"华山","lon0":110.0884,"lat0":34.4779,"dlon":0.12,"dlat":0.1,"min":379.0,"max":2289.0,"marks":[{"name":"华山","lon":110.0884,"lat":34.4779},{"name":"南峰","lon":110.0884,"lat":34.4779}]},"huangshan":{"key":"huangshan","title":"黄山","lon0":118.1633,"lat0":30.131,"dlon":0.12,"dlat":0.1,"min":277.0,"max":1791.0,"marks":[{"name":"黄山","lon":118.1633,"lat":30.131},{"name":"莲花峰","lon":118.166,"lat":30.129},{"name":"光明顶","lon":118.164,"lat":30.132}]},"emeishan":{"key":"emeishan","title":"峨眉山","lon0":103.332,"lat0":29.5189,"dlon":0.12,"dlat":0.1,"min":709.0,"max":3062.0,"marks":[{"name":"峨眉山","lon":103.332,"lat":29.5189},{"name":"金顶","lon":103.332,"lat":29.519}]},"lushan":{"key":"lushan","title":"庐山","lon0":115.988,"lat0":29.563,"dlon":0.12,"dlat":0.1,"min":45.0,"max":1429.0,"marks":[{"name":"庐山","lon":115.988,"lat":29.563},{"name":"三叠泉","lon":115.99,"lat":29.56}]},"changbaishan":{"key":"changbaishan","title":"长白山","lon0":128.055,"lat0":42.006,"dlon":0.12,"dlat":0.1,"min":1674.0,"max":2708.0,"marks":[{"name":"长白山","lon":128.055,"lat":42.006},{"name":"天池","lon":128.055,"lat":42.006}]},"zhangjiajie":{"key":"zhangjiajie","title":"张家界","lon0":110.433,"lat0":29.325,"dlon":0.12,"dlat":0.1,"min":378.0,"max":1138.0,"marks":[{"name":"张家界","lon":110.433,"lat":29.325},{"name":"天子山","lon":110.433,"lat":29.325}]},"guilin":{"key":"guilin","title":"桂林山水","lon0":110.29,"lat0":25.281,"dlon":0.12,"dlat":0.1,"min":115.0,"max":447.0,"marks":[{"name":"桂林","lon":110.29,"lat":25.281},{"name":"漓江","lon":110.29,"lat":25.281}]},"yulong":{"key":"yulong","title":"玉龙雪山","lon0":100.18,"lat0":27.1,"dlon":0.12,"dlat":0.1,"min":2611.0,"max":5337.0,"marks":[{"name":"玉龙雪山","lon":100.18,"lat":27.1}]},"wutaishan":{"key":"wutaishan","title":"五台山","lon0":113.57,"lat0":39.08,"dlon":0.12,"dlat":0.1,"min":1600.0,"max":3045.0,"marks":[{"name":"五台山","lon":113.57,"lat":39.08}]},"wudang":{"key":"wudang","title":"武当山","lon0":111.0,"lat0":32.4,"dlon":0.12,"dlat":0.1,"min":317.0,"max":1494.0,"marks":[{"name":"武当山","lon":111.0,"lat":32.4},{"name":"金顶","lon":111.0,"lat":32.4}]},"wuyi":{"key":"wuyi","title":"武夷山","lon0":117.68,"lat0":27.72,"dlon":0.12,"dlat":0.1,"min":449.0,"max":1739.0,"marks":[{"name":"武夷山","lon":117.68,"lat":27.72},{"name":"天游峰","lon":117.68,"lat":27.72}]},"sanqing":{"key":"sanqing","title":"三清山","lon0":118.06,"lat0":28.91,"dlon":0.12,"dlat":0.1,"min":197.0,"max":1616.0,"marks":[{"name":"三清山","lon":118.06,"lat":28.91}]},"shennongjia":{"key":"shennongjia","title":"神农架","lon0":110.67,"lat0":31.74,"dlon":0.14,"dlat":0.12,"min":643.0,"max":2012.0,"marks":[{"name":"神农架","lon":110.67,"lat":31.74}]},"jiuzhaigou":{"key":"jiuzhaigou","title":"九寨沟","lon0":103.92,"lat0":33.26,"dlon":0.14,"dlat":0.12,"min":1835.0,"max":3999.0,"marks":[{"name":"九寨沟","lon":103.92,"lat":33.26},{"name":"五花海","lon":103.92,"lat":33.26}]},"daocheng":{"key":"daocheng","title":"稻城亚丁","lon0":100.33,"lat0":28.43,"dlon":0.14,"dlat":0.12,"min":3248.0,"max":5769.0,"marks":[{"name":"稻城亚丁","lon":100.33,"lat":28.43},{"name":"三神山","lon":100.33,"lat":28.43}]},"gongga":{"key":"gongga","title":"贡嘎山","lon0":101.879,"lat0":29.595,"dlon":0.14,"dlat":0.12,"min":3952.0,"max":7446.0,"marks":[{"name":"贡嘎山","lon":101.879,"lat":29.595}]},"everest":{"key":"everest","title":"珠穆朗玛峰","lon0":86.925,"lat0":27.9881,"dlon":0.14,"dlat":0.12,"min":5066.0,"max":8794.0,"marks":[{"name":"珠穆朗玛峰","lon":86.925,"lat":27.9881}]},"tianshan":{"key":"tianshan","title":"天山天池","lon0":88.13,"lat0":43.88,"dlon":0.14,"dlat":0.12,"min":1366.0,"max":3490.0,"marks":[{"name":"天山天池","lon":88.13,"lat":43.88}]},"kunlun":{"key":"kunlun","title":"昆仑山","lon0":86.0,"lat0":36.0,"dlon":0.16,"dlat":0.14,"min":4897.0,"max":5126.0,"marks":[{"name":"昆仑山","lon":86.0,"lat":36.0}]}};</script>
+  <script src="/js/ef-bg.js?v=20261123j"></script>
+  <script src="/js/main.js?v=20261124l"></script>
+  <script src="/js/toy.js?v=20261124e"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+<article class="tag-page">
+  <h1 class="tag-title">分类</h1>
+  <ul class="tag-cloud">
+    <% site.categories.each(function(c){ %>
+      <li><a href="<%- url_for(c.path) %>"><span class="tagname"><%= c.name %></span><span class="tagcount"><%= c.length %></span></a></li>
+    <% }); %>
+  </ul>
+</article>

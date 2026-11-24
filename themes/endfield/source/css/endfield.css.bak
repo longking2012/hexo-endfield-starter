@@ -1,0 +1,284 @@
+/* ============================================================
+   endfield.css — Arknights: Endfield style override
+   Palette (from endfield.hypergryph.com):
+     #191919  charcoal bg
+     #0d0d0d  deeper bg
+     #fffa00  Endfield yellow (primary accent)
+     #ff1aac  magenta (secondary)
+     #00ffa2  green (tertiary)
+     #35373c  panel border
+   ============================================================ */
+
+/* ---- base dark ---- */
+body.ef-theme{
+  --bg:#0d0d0d;
+  --bg-panel:#191919;
+  --fg:#f2f2f2;
+  --fg-muted:#9ba0a6;
+  --fg-faint:#6b7076;
+  --border:#35373c;
+  --code-bg:#141414;
+  --code-fg:#fffa00;
+  --hover-bg:#1e1e1e;
+  --accent:#fffa00;
+  --accent-magenta:#ff1aac;
+  --accent-green:#00ffa2;
+  background:#0d0d0d;
+  color:var(--fg);
+  font-family:'HarmonyOS Sans SC','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+}
+
+/* industrial grid background */
+body.ef-theme::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  background:
+    linear-gradient(rgba(255,250,0,.025) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(90deg, rgba(255,250,0,.025) 1px, transparent 1px) 0 0 / 32px 32px,
+    radial-gradient(ellipse at 50% -20%, rgba(255,250,0,.06), transparent 55%),
+    #0d0d0d;
+}
+
+/* scanline overlay */
+body.ef-theme::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+  background:repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0 1px, transparent 1px 3px);
+  mix-blend-mode:overlay;
+}
+
+/* ---- header ---- */
+body.ef-theme #header{
+  background:rgba(13,13,13,.85);
+  backdrop-filter:blur(10px) saturate(140%);
+  border-bottom:1px solid #35373c;
+  box-shadow:0 0 24px rgba(0,0,0,.6);
+}
+body.ef-theme .header-stripe{
+  position:absolute;
+  left:0;right:0;bottom:0;
+  height:2px;
+  background:linear-gradient(90deg,#fffa00 0 33%,#35373c 33% 66%,#ff1aac 66% 100%);
+  opacity:.8;
+}
+body.ef-theme .site-title.logo img{
+  filter:drop-shadow(0 0 8px rgba(255,250,0,.25));
+}
+body.ef-theme .nav-link{
+  color:#c9ccd1;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size:13px;
+  position:relative;
+  padding:6px 2px;
+}
+body.ef-theme .nav-link::after{
+  content:"";
+  position:absolute;left:0;right:0;bottom:0;
+  height:2px;
+  background:var(--accent);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform .2s;
+}
+body.ef-theme .nav-link:hover{color:#fff;text-decoration:none}
+body.ef-theme .nav-link:hover::after{transform:scaleX(1)}
+
+/* ---- links / accents ---- */
+body.ef-theme a{color:var(--accent)}
+body.ef-theme a:hover{color:#fff}
+
+/* ---- post title ---- */
+body.ef-theme .post-title a{
+  color:#f2f2f2;
+  font-weight:700;
+  letter-spacing:.01em;
+}
+body.ef-theme .post-title a:hover{color:var(--accent);text-shadow:0 0 12px rgba(255,250,0,.4)}
+
+/* ---- tags ---- */
+body.ef-theme .tag{
+  color:#c9ccd1;
+  background:rgba(255,250,0,.05);
+  border:1px solid #35373c;
+  padding:2px 10px;
+  clip-path:polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+}
+body.ef-theme .tag:hover{color:var(--accent);border-color:var(--accent)}
+
+/* ---- cards / panels ---- */
+body.ef-theme .post,
+body.ef-theme .post-page,
+body.ef-theme .archive-page,
+body.ef-theme .tag-page{
+  background:rgba(25,25,25,.6);
+  border:1px solid #2a2c30;
+  border-radius:4px;
+  padding:28px 30px;
+  margin:0 0 24px;
+  clip-path:polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+  position:relative;
+}
+body.ef-theme .post::before,
+body.ef-theme .post-page::before{
+  content:"";
+  position:absolute;top:0;left:0;
+  width:48px;height:2px;
+  background:var(--accent);
+}
+body.ef-theme .post:first-child{padding-top:28px}
+
+/* ---- readmore button ---- */
+body.ef-theme .post-readmore{
+  display:inline-block;
+  margin-top:14px;
+  padding:6px 18px;
+  color:#0d0d0d;
+  background:var(--accent);
+  border:none;
+  font-weight:600;
+  letter-spacing:.06em;
+  clip-path:polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+  transition:transform .15s;
+}
+body.ef-theme .post-readmore:hover{
+  background:#fff;
+  text-decoration:none;
+  transform:translateY(-1px);
+}
+
+/* ---- code blocks ---- */
+body.ef-theme .post-content pre{
+  background:#141414;
+  border:1px solid #2a2c30;
+  border-left:3px solid var(--accent);
+  border-radius:0;
+}
+body.ef-theme .post-content code{
+  background:rgba(255,250,0,.08);
+  color:#fffa00;
+  border-radius:0;
+}
+body.ef-theme .post-content pre code{color:#e8e8e8}
+
+/* ---- blockquote ---- */
+body.ef-theme .post-content blockquote{
+  background:rgba(255,26,172,.05);
+  border-left:3px solid var(--accent-magenta);
+  border-radius:0;
+  color:#c9ccd1;
+}
+
+/* ---- TOC ---- */
+body.ef-theme .post-toc{
+  background:#141414;
+  border:1px solid #2a2c30;
+  border-radius:0;
+}
+body.ef-theme .post-toc summary{color:var(--accent)}
+
+/* ---- pagination ---- */
+body.ef-theme .pagination{border-top:1px solid #2a2c30}
+body.ef-theme .page-prev,
+body.ef-theme .page-next{
+  padding:6px 16px;
+  border:1px solid #35373c;
+  color:#c9ccd1;
+  clip-path:polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+}
+body.ef-theme .page-prev:hover,
+body.ef-theme .page-next:hover{color:var(--accent);border-color:var(--accent);text-decoration:none}
+
+/* ---- archive list ---- */
+body.ef-theme .archive-item{border-bottom:1px solid #232529}
+body.ef-theme .archive-item a{color:#e8e8e8}
+body.ef-theme .archive-item a:hover{color:var(--accent)}
+
+/* ---- tag cloud ---- */
+body.ef-theme .tag-cloud a{
+  background:rgba(255,250,0,.05);
+  border:1px solid #35373c;
+  clip-path:polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+  color:#e8e8e8;
+}
+body.ef-theme .tag-cloud a:hover{color:var(--accent);border-color:var(--accent)}
+
+/* ---- footer ---- */
+body.ef-theme #footer{
+  border-top:1px solid #2a2c30;
+  color:#7d8288;
+  position:relative;
+}
+body.ef-theme #footer::before{
+  content:"";
+  position:absolute;top:-1px;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,#fffa00,#ff1aac,#00ffa2);
+  opacity:.5;
+}
+body.ef-theme #footer a{color:#9ba0a6}
+body.ef-theme #footer a:hover{color:var(--accent)}
+
+/* ---- scrollbar ---- */
+body.ef-theme::-webkit-scrollbar{width:10px}
+body.ef-theme::-webkit-scrollbar-track{background:#0d0d0d}
+body.ef-theme::-webkit-scrollbar-thumb{background:#35373c;border:2px solid #0d0d0d}
+body.ef-theme::-webkit-scrollbar-thumb:hover{background:#fffa00}
+
+/* ---- selection ---- */
+body.ef-theme ::selection{background:#fffa00;color:#0d0d0d}
+
+/* ---- theme toggle ---- */
+body.ef-theme .theme-toggle{color:#9ba0a6}
+body.ef-theme .theme-toggle:hover{color:#fffa00;background:rgba(255,250,0,.08)}
+/* nav avatar (chibi character in top bar) */
+body.ef-theme .nav-avatar-wrap{
+  display:inline-flex;
+  align-items:center;
+  margin-left:6px;
+}
+body.ef-theme .nav-avatar{
+  width:32px;height:32px;
+  border-radius:50%;
+  object-fit:cover;
+  border:1px solid #3a3c40;
+  box-shadow:0 0 10px rgba(255,250,0,.15);
+  transition:box-shadow .2s, border-color .2s;
+}
+body.ef-theme .nav-avatar:hover{
+  border-color:var(--accent);
+  box-shadow:0 0 14px rgba(255,250,0,.4);
+}
+@media (max-width:640px){
+  body.ef-theme .nav-avatar{width:26px;height:26px}
+}
+/* header: one clean centered row (no wrap) */
+body.ef-theme .header-inner{
+  flex-wrap:nowrap;
+  justify-content:center;
+  gap:32px;
+}
+body.ef-theme .site-nav{
+  margin-left:0;
+  flex-wrap:nowrap;
+  gap:26px;
+}
+body.ef-theme .site-title.logo{
+  display:inline-flex;
+  align-items:center;
+  flex:none;
+}
+body.ef-theme .site-title.logo img{
+  display:block;
+  vertical-align:middle;
+  max-width:none;
+}
+body.ef-theme .nav-avatar-wrap{
+  margin-left:8px;
+}

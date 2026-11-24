@@ -1,0 +1,18 @@
+<header id="header">
+  <div class="header-inner">
+    <% if (theme.logo) { %>
+      <a href="<%= config.root %>" class="site-title logo">
+        <img src="<%= url_for(theme.logo) %>" alt="<%= config.title %>" class="logo-img" style="height:<%= theme.logo_height || '32px' %>;width:auto;">
+      </a>
+    <% } else { %>
+      <a href="<%= config.root %>" class="site-title"><%= config.title %></a>
+    <% } %>
+    <nav class="site-nav">
+      <% theme.menu && Object.keys(theme.menu).forEach(function(name){ %>
+        <a href="<%= url_for(theme.menu[name]) %>" class="nav-link"><%= name %></a>
+      <% }); %>
+      <button id="theme-toggle" class="theme-toggle" aria-label="切换深色模式">◐</button>
+    </nav>
+  </div>
+  <div class="header-stripe"></div>
+</header>

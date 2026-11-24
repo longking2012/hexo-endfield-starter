@@ -1,0 +1,49 @@
+# ---------------------------------------------------------------
+# endfield theme configuration (Arknights: Endfield style)
+# ---------------------------------------------------------------
+
+# Site header
+menu:
+  首页: /
+  标签: /tags/
+  归档: /archives/
+  监控: /status/
+
+# Logo image (replaces the text site-title in the header)
+logo: /images/nav-avatar.webp
+logo_height: 32px
+nav_avatar: /images/nav-avatar.webp
+
+# Post
+excerpt_description: true
+
+# Dark mode (Endfield style is always dark, but keep toggle)
+dark_mode:
+  enable: true
+  default: dark    # force dark
+
+# Footer
+footer:
+  copyright: true
+  icp: 20269027
+  gongan_id:
+  gongan_num:
+
+# SEO meta 站点验证
+verification:
+  baidu: codeva-ZaH6K1E2F1
+  bing: 68492A6D7A8B6694C8C66200B91F05CB
+  google:
+
+# Accent color (overridden in endfield.css; keep for fallback)
+accent_color: '#fffa00'
+
+# Font family overrides
+font:
+  sans: '"HarmonyOS Sans SC", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif'
+  mono: '"JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace'
+
+# Table of contents (post pages)
+toc:
+  enable: true
+  depth: 2

@@ -1,0 +1,38 @@
+<% page.posts.each(function(post){ %>
+  <article class="post">
+    <header class="post-header">
+      <h2 class="post-title">
+        <a href="<%- url_for(post.path) %>"><%= post.title %></a>
+      </h2>
+      <div class="post-meta">
+        <time datetime="<%= date_xml(post.date) %>"><%= date(post.date, 'YYYY-MM-DD') %></time>
+        <% if (post.tags && post.tags.length) { %>
+          <span class="post-tags">
+            <%- post.tags.map(function(t){ return '<a class="tag" href="' + url_for(t.path) + '">#' + t.name + '</a>'; }).join(' ') %>
+          </span>
+        <% } %>
+      </div>
+    </header>
+    <div class="post-excerpt">
+      <% var excerpt = '';
+         if (theme.excerpt_description && post.description) {
+           excerpt = post.description;
+         } else if (typeof post.excerpt === 'function') {
+           excerpt = post.excerpt({strip: false, excerpt: true});
+         } else if (post._excerpt) {
+           excerpt = post._excerpt;
+         }
+         excerpt = String(excerpt || '').trim(); %>
+      <% if (excerpt) { %><p><%- excerpt %></p><% } %>
+    </div>
+    <a class="post-readmore" href="<%- url_for(post.path) %>">阅读全文 →</a>
+  </article>
+<% }); %>
+
+<% if (page.total > 1) { %>
+  <nav class="pagination">
+    <% if (page.prev) { %><a href="<%- url_for(page.prev + '/index.html') %>" class="page-prev">← 上一页</a><% } %>
+    <span class="page-info">第 <%= page.current %> / <%= page.total %> 页</span>
+    <% if (page.next) { %><a href="<%- url_for(page.next + '/index.html') %>" class="page-next">下一页 →</a><% } %>
+  </nav>
+<% } %>
