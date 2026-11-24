@@ -126,11 +126,11 @@
     var ov=document.createElement("div"); ov.id="ef-mini";
     ov.style.cssText="position:fixed;left:0;top:0;right:0;bottom:0;z-index:2147483000;background:rgba(8,9,10,.94);font-family:Consolas,monospace;color:#fffa00;user-select:none;cursor:crosshair";
     ov.innerHTML =
-      "<div id=\\"ef-mini-hud\\" style=\\"position:absolute;left:0;right:0;top:0;padding:14px 20px;display:flex;justify-content:space-between;font-size:13px;letter-spacing:.1em;border-bottom:1px solid rgba(255,250,0,.2)\\">"+
-        "<span>DEFLECT // 弹反</span><span id=\\"ef-mini-sc\\">SCORE 0</span><span id=\\"ef-mini-lf\\">LIVES ▲▲▲</span>"+
+      "<div id=\"ef-mini-hud\" style=\"position:absolute;left:0;right:0;top:0;padding:14px 20px;display:flex;justify-content:space-between;font-size:13px;letter-spacing:.1em;border-bottom:1px solid rgba(255,250,0,.2)\">"+
+        "<span>DEFLECT // 弹反</span><span id=\"ef-mini-sc\">SCORE 0</span><span id=\"ef-mini-lf\">LIVES ▲▲▲</span>"+
       "</div>"+
-      "<canvas id=\\"ef-mini-cv\\" style=\\"position:absolute;left:0;top:0;width:100%;height:100%\\"></canvas>"+
-      "<div id=\\"ef-mini-tip\\" style=\\"position:absolute;left:0;right:0;bottom:18px;text-align:center;font-size:12px;color:#9a9a86;letter-spacing:.15em\\">点击 / 空格 弹反 · 方块接近核心时出手 · ESC 退出</div>";
+      "<canvas id=\"ef-mini-cv\" style=\"position:absolute;left:0;top:0;width:100%;height:100%\"></canvas>"+
+      "<div id=\"ef-mini-tip\" style=\"position:absolute;left:0;right:0;bottom:18px;text-align:center;font-size:12px;color:#9a9a86;letter-spacing:.15em\">点击 / 空格 弹反 · 方块接近核心时出手 · ESC 退出</div>";
     document.body.appendChild(ov);
     startLoop(ov);
   }
