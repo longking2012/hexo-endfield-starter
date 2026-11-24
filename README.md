@@ -32,7 +32,74 @@
 
 点击右上角的 **Fork** 按钮，将本仓库复制到你的 GitHub 账号下。
 
-### 2. 启用 GitHub Pages
+### 2. 创建部署配置文件
+
+由于安全限制，Fork 后需要手动创建一个部署配置文件（只需一次）：
+
+1. 在你 Fork 的仓库中，进入 `.github/` 目录
+2. 新建文件夹 `workflows`，在其中新建文件 `deploy.yml`
+3. 把下面的内容完整复制进去，保存：
+
+```yaml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: |
+          npm install -g hexo-cli
+          npm install
+
+      - name: Build
+        run: hexo generate
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+### 3. 启用 GitHub Pages
 
 进入你 Fork 后的仓库：
 
@@ -40,7 +107,7 @@
 2. 在 **Source** 下拉框中，选择 **GitHub Actions**
 3. 保存
 
-### 3. 触发部署
+### 4. 触发部署
 
 进入 **Actions** 标签页：
 
