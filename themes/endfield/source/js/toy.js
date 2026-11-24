@@ -1,4 +1,4 @@
-/* 若水凡心 · 小玩具彩蛋 */
+/* Endfield · 小玩具彩蛋 */
 (function(){
   'use strict';
 
@@ -57,7 +57,7 @@
   });
 
   /* 4. 控制台彩蛋 */
-  console.log('%c若水凡心','color:#fffa00;font-size:24px;font-weight:bold;text-shadow:0 0 10px rgba(255,250,0,.5)');
+  console.log('%cEndfield','color:#fffa00;font-size:24px;font-weight:bold;text-shadow:0 0 10px rgba(255,250,0,.5)');
   console.log('%c// 发现了这个隐藏的控制台','color:#888');
   console.log('%c试试 ↑↑↓↓←→←→BA 或者点击页面空白处','color:#666');
 

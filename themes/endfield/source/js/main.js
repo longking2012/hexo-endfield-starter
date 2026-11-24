@@ -82,21 +82,10 @@
   var au=document.getElementById('efAudio'); if(!au) return;
   /* 歌单: 换成你自己的音乐,把 src 改成 /music/xxx.mp3 并把文件放到 source/music/ 即可 */
   var PLAYLIST=[
-  {title:"A Secluded Path",artist:"塞壬唱片-MSR, Castalia Audio & 红唐",src:"/music/A%20Secluded%20Path.m4a"},
-  {title:"Little Wish",artist:"塞壬唱片-MSR, Sincere & WS Music",src:"/music/Little%20Wish.m4a"},
-  {title:"My World (Blood Oath) [Tale Version]",artist:"铁痕电台-MSR, 桑曼容, Erik Castro & David Lin",src:"/music/My%20World%20%28Blood%20Oath%29%20%5BTale%20Version%5D.m4a"},
-  {title:"Mystic Light Quest (Instrumental Version)",artist:"塞壬唱片-MSR & Machico",src:"/music/Mystic%20Light%20Quest%20%28Instrumental%20Version%29.m4a"},
-  {title:"Mystic Light Quest",artist:"塞壬唱片-MSR & Machico",src:"/music/Mystic%20Light%20Quest.m4a"},
-  {title:"Snapshot",artist:"铁痕电台-MSR, Adam Gubman & Sorah Eun",src:"/music/Snapshot.m4a"},
-  {title:"Sparkling Days",artist:"塞壬唱片-MSR, Castalia Audio & Bangler",src:"/music/Sparkling%20Days.m4a"},
-  {title:"Speed of Light",artist:"塞壬唱片-MSR, DJ OKAWARI & 二宫爱",src:"/music/Speed%20of%20Light.m4a"},
-  {title:"东归处",artist:"铁痕电台-MSR, 再定义ReStudio & 邹畅",src:"/music/%E4%B8%9C%E5%BD%92%E5%A4%84.m4a"},
-  {title:"春景故人来",artist:"铁痕电台-MSR & Kirara Magic",src:"/music/%E6%98%A5%E6%99%AF%E6%95%85%E4%BA%BA%E6%9D%A5.m4a"},
-  {title:"来时新社",artist:"铁痕电台-MSR, VISION SOUND & Salty Salt",src:"/music/%E6%9D%A5%E6%97%B6%E6%96%B0%E7%A4%BE.m4a"},
-  {title:"直到大地变成一颗酸橙",artist:"塞壬唱片-MSR, 星熊南巫, Earthists. & 平林佑人",src:"/music/%E7%9B%B4%E5%88%B0%E5%A4%A7%E5%9C%B0%E5%8F%98%E6%88%90%E4%B8%80%E9%A2%97%E9%85%B8%E6%A9%99.m4a"},
-  {title:"知山水",artist:"铁痕电台-MSR & Gareth Coker",src:"/music/%E7%9F%A5%E5%B1%B1%E6%B0%B4.m4a"},
-  {title:"青简注我",artist:"铁痕电台-MSR & Kirara Magic",src:"/music/%E9%9D%92%E7%AE%80%E6%B3%A8%E6%88%91.m4a"},
-];
+    /* 在此添加你的音乐: 把文件放到 source/music/, 修改 src 路径
+    {title:"示例音乐",artist:"艺术家",src:"/music/demo.mp3"},
+    */
+  ];
   var idx=0, mode='list'; /* list | one | random */
   var $=function(id){ return document.getElementById(id); };
   var playBtn=$('efPlay'), trackEl=$('efTrack'), artistEl=$('efArtist'), curEl=$('efCur'), durEl=$('efDur');
