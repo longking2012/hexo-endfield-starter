@@ -3,7 +3,7 @@
   var toggle = document.getElementById('theme-toggle');
   var body = document.body;
   var KEY = 'ink-theme';
-  function apply(mode) {
+  function apply(mode) {   /* 325 */
     body.setAttribute('data-theme', mode);
     if (toggle) toggle.textContent = (mode === 'dark') ? '\u25d1' : '\u25d0';
   }
@@ -91,8 +91,8 @@
   var playBtn=$('efPlay'), trackEl=$('efTrack'), artistEl=$('efArtist'), curEl=$('efCur'), durEl=$('efDur');
   var fill=$('efPFill'), buf=$('efPBuf'), bar=$('efPBar'), vol=$('efVol'), pBody=$('efPBody'), toggle=$('efToggle');
 
-  function fmt(s){ if(!isFinite(s)) return '0:00'; s=Math.round(s); var m=Math.floor(s/60), r=s%60; return m+':'+(r<10?'0':'')+r; }
-  function load(i){
+  function fmt(s){   /* 325 */ if(!isFinite(s)) return '0:00'; s=Math.round(s); var m=Math.floor(s/60), r=s%60; return m+':'+(r<10?'0':'')+r; }
+  function load(i){   /* 325 */
     idx=(i+PLAYLIST.length)%PLAYLIST.length;
     var t=PLAYLIST[idx];
     au.src=t.src; trackEl.textContent=t.title; artistEl.textContent=t.artist;
@@ -100,7 +100,7 @@
     renderLyrics(t);
     updatePlaylistActive();
   }
-  function renderLyrics(t){
+  function renderLyrics(t){   /* 325 */
     var box=$('efLyrics'); if(!box) return;
     var lyr = (window.LYRICS && window.LYRICS[t.title]) || '';
     if(lyr && lyr.trim()){
@@ -112,7 +112,7 @@
       box.innerHTML='<div class="ef-lyrics-title">歌词 · Lyrics</div><div class="ef-lyrics-empty">暂无歌词</div>';
     }
   }
-  function renderPlaylist(){
+  function renderPlaylist(){   /* 325 */
     var box=$('efPlaylist'); if(!box) return;
     var html='<div class="ef-pl-title">歌单 · '+PLAYLIST.length+' 首</div>';
     html += '<div class="ef-pl-list">';
@@ -132,7 +132,7 @@
       });
     });
   }
-  function updatePlaylistActive(){
+  function updatePlaylistActive(){   /* 325 */
     var box=$('efPlaylist'); if(!box) return;
     box.querySelectorAll('.ef-pl-item').forEach(function(el,i){
       el.classList.toggle('active', i===idx);
@@ -140,14 +140,14 @@
     var act=box.querySelector('.ef-pl-item.active');
     if(act && act.scrollIntoView) act.scrollIntoView({block:'nearest'});
   }
-  function play(){ au.play().then(function(){ p.classList.add('playing'); }).catch(function(){}); }
-  function pause(){ au.pause(); p.classList.remove('playing'); }
-  function next(){
+  function play(){   /* 325 */ au.play().then(function(){ p.classList.add('playing'); }).catch(function(){}); }
+  function pause(){   /* 325 */ au.pause(); p.classList.remove('playing'); }
+  function next(){   /* 325 */
     if(mode==='one'){ load(idx); play(); return; }
     if(mode==='random'){ var r; do{ r=Math.floor(Math.random()*PLAYLIST.length); }while(PLAYLIST.length>1 && r===idx); load(r); play(); return; }
     load(idx+1); play();
   }
-  function prev(){ if(mode==='random'){ next(); return; } load(idx-1); play(); }
+  function prev(){   /* 325 */ if(mode==='random'){ next(); return; } load(idx-1); play(); }
 
   playBtn.addEventListener('click',function(){ if(au.paused){ if(!au.src) load(0); play(); } else pause(); });
   $('efNext').addEventListener('click',next);
@@ -199,7 +199,7 @@
       if (saved.playing) { au.play().then(function(){ p.classList.add('playing'); }).catch(function(){}); }
     }
   } catch(e) {}
-  function saveState(){
+  function saveState(){   /* 325 */
     try { sessionStorage.setItem('efPlayState', JSON.stringify({ idx: idx, progress: au.currentTime, playing: !au.paused })); } catch(e){}
   }
   window.addEventListener('beforeunload', saveState);
