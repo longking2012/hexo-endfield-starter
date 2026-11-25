@@ -1,33 +1,7 @@
-<div class="ef-win" id="efWin">
-  <div class="ef-win-tb">
-    <span class="ef-win-ico" aria-hidden="true">
-      <svg viewBox="0 0 16 16" width="15" height="15"><rect x="1.4" y="2" width="13.2" height="12" rx="1.6" fill="none" stroke="#fff" stroke-width="1.4"/><path d="M4 6h8M4 9h8M4 12h5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>
-    </span>
-    <span class="ef-win-title"><%= page.title %></span>
-    <span class="ef-win-btns">
-      <button type="button" class="ef-win-b" data-act="min" aria-label="最小化">&#8212;</button>
-      <button type="button" class="ef-win-b" data-act="max" aria-label="最大化">&#9633;</button>
-      <button type="button" class="ef-win-b ef-win-close" data-act="close" aria-label="关闭">&#10005;</button>
-    </span>
+<article class="post-page">
+  <div class="post-back">
+    <a href="<%= config.root %>" class="post-back-link" title="返回博客首页">← 回到主页</a>
   </div>
-  <div class="ef-win-body">
-    <h1 class="post-title sr-only"><%= page.title %></h1>
-    <div class="post-content ef-win-content"><%- page.content %></div>
-  </div>
-</div>
-<script>
-(function(){
-  var w=document.getElementById("efWin");
-  if(!w) return;
-  var body=w.querySelector(".ef-win-body");
-  var root="<%= config.root %>";
-  Array.prototype.forEach.call(w.querySelectorAll(".ef-win-b"),function(b){
-    b.addEventListener("click",function(){
-      var act=b.getAttribute("data-act");
-      if(act==="close"){ location.href=root; }
-      else if(act==="min"){ body.classList.toggle("ef-win-min"); }
-      else if(act==="max"){ w.classList.toggle("ef-win-max"); }
-    });
-  });
-})();
-</script>
+  <h1 class="post-title"><%= page.title %></h1>
+  <div class="post-content"><%- page.content %></div>
+</article>
