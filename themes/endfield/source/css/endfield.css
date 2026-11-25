@@ -889,3 +889,10 @@ body.ef-theme .ef-player-resize{ cursor: nwse-resize; }
 }
 
 /* 2550360 Lovely Longking 325 */
+
+/* View Transitions 页面转场 */
+#content{ view-transition-name: ef-content; }
+::view-transition-old(ef-content){ animation: efOut .2s ease forwards; }
+::view-transition-new(ef-content){ animation: efIn .32s cubic-bezier(.2,.7,.3,1) forwards; }
+@keyframes efOut{ to{ opacity:0; transform:translateX(-18px); } }
+@keyframes efIn{ from{ opacity:0; transform:translateX(26px); } to{ opacity:1; transform:none; } }
