@@ -37,25 +37,6 @@
     }
   });
 
-  /* 3. Konami code 彩蛋(↑↑↓↓←→←→BA → 彩虹模式) */
-  var konami = [], seq = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-  var rainbowOn = false, hueInt = null;
-  document.addEventListener('keydown', function(e){
-    konami.push(e.key.length===1 ? e.key.toLowerCase() : e.key);
-    if(konami.length > seq.length) konami.shift();
-    if(konami.join(',') === seq.join(',')){
-      if(rainbowOn){
-        rainbowOn = false; clearInterval(hueInt); document.body.style.filter = '';
-        console.log('%c[彩蛋关闭]','color:#888');
-      } else {
-        rainbowOn = true; var hue = 0;
-        hueInt = setInterval(function(){ hue = (hue+3)%360; document.body.style.filter = 'hue-rotate('+hue+'deg)'; }, 60);
-        console.log('%c[Konami 彩蛋触发] 彩虹模式!再输入一次关闭','color:#fffa00;font-size:14px');
-      }
-      konami = [];
-    }
-  });
-
   /* 4. 控制台彩蛋 */
   console.log('%cEndfield','color:#fffa00;font-size:24px;font-weight:bold;text-shadow:0 0 10px rgba(255,250,0,.5)');
   console.log('%c// 发现了这个隐藏的控制台','color:#888');
