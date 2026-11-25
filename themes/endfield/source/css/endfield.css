@@ -896,3 +896,17 @@ body.ef-theme .ef-player-resize{ cursor: nwse-resize; }
 ::view-transition-new(ef-content){ animation: efIn .32s cubic-bezier(.2,.7,.3,1) forwards; }
 @keyframes efOut{ to{ opacity:0; transform:translateX(-18px); } }
 @keyframes efIn{ from{ opacity:0; transform:translateX(26px); } to{ opacity:1; transform:none; } }
+
+/* 回到主页按钮 */
+.post-back{ margin-bottom:16px; }
+.post-back-link{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:7px 14px; font-size:13px; letter-spacing:.08em;
+  color:#fffa00; border:1px solid rgba(255,250,0,.5);
+  border-radius:3px; text-decoration:none;
+  transition:all .2s; background:rgba(255,250,0,.05);
+}
+.post-back-link:hover{
+  background:rgba(255,250,0,.16); border-color:#fffa00;
+  box-shadow:0 0 10px rgba(255,250,0,.3);
+}
