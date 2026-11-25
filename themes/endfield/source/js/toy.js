@@ -96,11 +96,24 @@
 (function(){
   "use strict";
   var seq=[38,38,40,40,37,39,37,39,66,65], pos=0;
+  // 用 e.code(物理键码)检测, 不受中文输入法/语言影响
+  function kc(e){
+    var map={ArrowUp:38,ArrowDown:40,ArrowLeft:37,ArrowRight:39,KeyB:66,KeyA:65};
+    if(e.code && map[e.code]!==undefined) return map[e.code];
+    if(e.key){ var k=e.key.toLowerCase();
+      if(k==="arrowup")return 38; if(k==="arrowdown")return 40;
+      if(k==="arrowleft")return 37; if(k==="arrowright")return 39;
+      if(k==="b")return 66; if(k==="a")return 65; }
+    return e.keyCode;
+  }
   document.addEventListener("keydown", function(e){
     if(e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
-    if(e.keyCode===seq[pos]){ pos++; if(pos===seq.length){ pos=0; openMini(); } }
-    else pos=(e.keyCode===seq[0])?1:0;
+    var c=kc(e);
+    if(c===seq[pos]){ pos++; if(pos===seq.length){ pos=0; openMini(); } }
+    else pos=(c===seq[0])?1:0;
   });
+  // 备用: 控制台手动触发 window.efOpenMini()
+  window.efOpenMini=openMini;
 
   function openMini(){
     if(document.getElementById("ef-mini")) return;
